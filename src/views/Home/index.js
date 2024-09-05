@@ -42,8 +42,10 @@ const Home = (props) => {
         let datalist = [];
         if (!isEmpty(formData)) {
             Alert.alert("submitted successfully");
-            let updatedlist = datalist.push(formData);
+            let updatedlist = [...datalist, formData];
             await AsyncStorage.setItem('data', JSON.stringify(updatedlist));
+
+            console.log(updatedlist, "--updatedlist")
             if (type === "submit") {
                 navigation.navigate("Dashboard", {data: updatedlist});
             } else {
@@ -148,7 +150,7 @@ const Home = (props) => {
             </View>
 
 
-            <TouchableOpacity style={styles.btn} onPress={()=>handleSubmit('redirect')}>
+            <TouchableOpacity style={styles.input} onPress={()=>handleSubmit('redirect')}>
                 <Text>Redirect to Multi Screen</Text>
             </TouchableOpacity>
 

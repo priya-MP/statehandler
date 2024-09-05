@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, FlatList } from 'react-native';
 
 
@@ -7,7 +7,15 @@ import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Dashboard = (props) => {
-    const { route } = props;
+    const [data, setData] = useState([])
+
+    useEffect(async () => {
+        async function fetchData() {
+            const datalist = await AsyncStorage.getItem('data');
+            setData(datalist);
+          }
+          fetchData();
+    }, []);
 
 
     const renderField = (label, value) => {
@@ -34,7 +42,7 @@ const Dashboard = (props) => {
         <View style={styles.container}>
             <FlatList
                 horizontal
-                data={(route?.params?.data || [])}
+                data={data}
                 renderItem={({ item }) => <Item item={item} />}
                 keyExtractor={(item, i) => i}
             />

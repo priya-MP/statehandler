@@ -8,11 +8,20 @@ import { isEmpty} from 'lodash'
 // ** styles
 import styles from '../Home/styles';
 
-const Multiselector = (props) => {
+const Multiselector = () => {
+    const [data, setData] = useState([]);
     const [images, setImages] = useState([]);
     const [users, setUsers] = useState([]);
 
-    const { route } = props;
+
+    useEffect(async () => {
+          fetchData();
+    }, []);
+
+    async function fetchData() {
+        const datalist = await AsyncStorage.getItem('data');
+       setData(datalist);
+      }
 
     const handleSelectImages = () => {
         ImagePicker.openPicker({
@@ -51,17 +60,15 @@ const Multiselector = (props) => {
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
                     search
-                    data={!isEmpty(route?.params?.data) && (route?.params?.data || [])?.map(ele => {
-                        return {
-                            label: ele.name || "",
-                            value: ele.name || ""
-                        }
-                    })}
+                    data={[
+                        { id: 'vasanthy', name: 'vasanthy' },
+                        { id: 'priya', name: 'priya' },
+                    ]}
                     labelField="label"
                     valueField="value"
                     placeholder="Select item"
                     searchPlaceholder="Search..."
-                    // value={users}
+                    value={users}
                     onChange={item => {
                         setUsers(item);
                     }}

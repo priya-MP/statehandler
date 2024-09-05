@@ -14,6 +14,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 5
     },
+    fieldContainer1:{
+      flex:1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      paddingVertical: 5
+    },
     input: {
         marginLeft: 15,
         width: 200,
