@@ -3,20 +3,16 @@ import { TouchableOpacity, Image, View, Text, Alert, ScrollView } from 'react-na
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import { MultiSelect } from 'react-native-element-dropdown';
+import { isEmpty} from 'lodash'
 
 // ** styles
 import styles from '../Home/styles';
 
-const Multiselector = () => {
-    const [data, setData] = useState([])
+const Multiselector = (props) => {
     const [images, setImages] = useState([]);
     const [users, setUsers] = useState([]);
 
-
-    useEffect(async () => {
-        const datalist = await AsyncStorage.getItem('data');
-        setData(datalist);
-    }, []);
+    const { route } = props;
 
     const handleSelectImages = () => {
         ImagePicker.openPicker({
@@ -41,7 +37,7 @@ const Multiselector = () => {
     }
 
     return (
-        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems:'center' }}>
             <TouchableOpacity style={styles.btn} onPress={handleSelectImages}>
                 <Text>Select Image</Text>
             </TouchableOpacity>
@@ -55,12 +51,17 @@ const Multiselector = () => {
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.iconStyle}
                     search
-                    data={data}
+                    data={!isEmpty(route?.params?.data) && (route?.params?.data || [])?.map(ele => {
+                        return {
+                            label: ele.name || "",
+                            value: ele.name || ""
+                        }
+                    })}
                     labelField="label"
                     valueField="value"
                     placeholder="Select item"
                     searchPlaceholder="Search..."
-                    value={users}
+                    // value={users}
                     onChange={item => {
                         setUsers(item);
                     }}
@@ -70,7 +71,7 @@ const Multiselector = () => {
 
 
             <ScrollView style={styles.imageContainer}>
-                {images.map((image, index) => (
+                {images?.map((image, index) => (
                     <Image
                         key={index}
                         source={{ uri: image.path }}

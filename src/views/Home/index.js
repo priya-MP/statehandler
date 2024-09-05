@@ -45,9 +45,9 @@ const Home = (props) => {
             let updatedlist = datalist.push(formData);
             await AsyncStorage.setItem('data', JSON.stringify(updatedlist));
             if (type === "submit") {
-                navigation.navigate("Dashboard");
+                navigation.navigate("Dashboard", {data: updatedlist});
             } else {
-                navigation.navigate('Multiselector')
+                navigation.navigate('Multiselector', {data: updatedlist})
             }
         }else {
             Alert.alert("Request failed");
